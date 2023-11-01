@@ -1,103 +1,100 @@
-import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, 
+  CreateDateColumn, 
+  DeleteDateColumn, 
+  Entity, 
+  PrimaryGeneratedColumn, 
+  UpdateDateColumn } from "typeorm";
 
-@Entity('products', { schema: 'ventas' })
-
-export class ProductEntity {
-  
+@Entity('products', {schema:'ventas'})
+export class ProductEntity{
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id:string;
 
   @CreateDateColumn({
-    name: 'create_at',
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
+      name:'create_at',
+      type:'timestamp',
+      default: ()=> 'CURRENT_TIMESTAMP',
   })
-  createAt: Date;
+  createAt:Date;
+
 
   @UpdateDateColumn({
-    name: 'update_at',
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
+      name:'update_at',
+      type:'timestamp',
+      default: ()=> 'CURRENT_TIMESTAMP',
   })
-  updateAt: Date;
+  updateAt:Date;
+
 
   @DeleteDateColumn({
-    name: 'delete_at',
-    type: 'timestamp',
-    nullable: true,
+      name:'delete_at',
+      type:'timestamp',
+      nullable:true,
   })
-  deleteAt: Date;
+  deleteAt:Date;
 
   @Column('varchar', {
-    name: 'title',
-    nullable: false,
-    comment: 'product title',
+      name:'title',
+      nullable:false,
+      comment:'product title'
   })
-  title: string;
+  title:string;
+  
+  @Column('numeric',{
+      name:'price',
+      nullable:false,
+      comment:'product price'
+  })
+  price:number;
 
-  @Column('number', {
-    name: 'price',
-    nullable: false,
-    comment: 'product price',
+  @Column('varchar',{
+      name:'descriptio',
+      nullable:true,
+      comment:'product description',
   })
-  price: number;
+  description:string;
 
   @Column('varchar', {
-    name: 'descriptio',
-    nullable: true,
-    comment: 'product description',
+      name: 'image',
+      nullable:true,
+      comment: 'product image',
   })
-  description: string;
-
-  @Column('varchar', {
-    name: 'image',
-    nullable: true,
-    comment: 'product image',
-  })
-  image: string;
+  image:string;
 
   @BeforeInsert()
   @BeforeUpdate()
-  async setTitle() {
-    if (!this.title) {
-      return;
-    }
-    this.title = this.title.toUpperCase();
+  async setTitle(){
+      if(!this.title){
+          return;
+      }
+      this.title = this.title.toUpperCase();
   }
 
   @BeforeInsert()
   @BeforeUpdate()
-  async setDescription() {
-    if (!this.description) {
-      return;
-    }
-    this.description = this.description.toLocaleLowerCase();
+  async setDescription(){
+      if(!this.description){
+          return;
+      }
+      this.description = this.description.toLocaleLowerCase();
   }
 
-  /* @BeforeInsert()
-    @BeforeUpdate()
-    async setEmail(){
-        if(!this.email){
-            return;
-        }
-        this.email = this.email.toLowerCase().trim();
-    }*/
+/* @BeforeInsert()
+  @BeforeUpdate()
+  async setEmail(){
+      if(!this.email){
+          return;
+      }
+      this.email = this.email.toLowerCase().trim();
+  }*/
 
-  /*@BeforeInsert()
-    @BeforeUpdate()
-    async hashPassword(){
-        if(!this.password){
-            return;
-        }
-        this.password = Bcrypt.hash(this.hashPassword, 12);
-    }*/
+/*@BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword(){
+      if(!this.password){
+          return;
+      }
+      this.password = Bcrypt.hash(this.hashPassword, 12);
+  }*/
+
 }
