@@ -1,8 +1,71 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('users')
-
 export class User extends BaseEntity {
-    @PrimaryGeneratedColumn('increment')
-    id: number;
+  
+  @CreateDateColumn({
+    name: 'create_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createAt: Date;
+
+  @UpdateDateColumn({
+    name: 'update_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updateAt: Date;
+
+  @DeleteDateColumn({
+    name: 'delete_at',
+    type: 'timestamp',
+    nullable: true,
+  })
+  deleteAt: Date;
+
+  @PrimaryGeneratedColumn('increment')
+  id: number;
+
+  @Column({
+    type: 'varchar',
+    unique: true,
+    length: 25,
+    nullable: false,
+    comment: 'Nombre',
+  })
+  username: string;
+
+  @Column({ 
+    type: 'varchar', 
+    nullable: false, 
+    comment: 'Correo' 
+  })
+  email: string;
+
+  @Column({ 
+    type: 'varchar', 
+    nullable: false, 
+    comment: 'Contraseña' 
+  })
+  password: string;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async setUserName() {
+    if (!this.username) {
+      return;
+    }
+    this.username = this.username.toUpperCase();
+  }
 }
